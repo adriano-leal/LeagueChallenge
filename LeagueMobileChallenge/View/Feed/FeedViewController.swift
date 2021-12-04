@@ -49,8 +49,6 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
         
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        100
-    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat { 140 }
     
 }

@@ -22,7 +22,7 @@ class PostTableViewCell: UITableViewCell {
     let avatarImage: UIImageView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.clipsToBounds = true
-        $0.layer.cornerRadius = 15
+        $0.layer.cornerRadius = 25
         $0.contentMode = .scaleAspectFit
         $0.image = UIImage(named: "defaultImg")
         return $0
@@ -30,7 +30,7 @@ class PostTableViewCell: UITableViewCell {
     
     let usernameLabel: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.font = .systemFont(ofSize:12)
+        $0.font = .systemFont(ofSize: 14, weight: .bold)
         $0.textColor = .black
         $0.text = "Adriano Ramos"
         return $0
@@ -38,7 +38,7 @@ class PostTableViewCell: UITableViewCell {
     
     let titleLabel: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.font = .systemFont(ofSize: 12)
+        $0.font = .systemFont(ofSize: 12, weight: .semibold)
         $0.textColor = .black
         $0.text = "League Challenge"
         return $0
@@ -46,7 +46,7 @@ class PostTableViewCell: UITableViewCell {
     
     let descriptionLabel: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.font = .systemFont(ofSize: 9)
+        $0.font = .systemFont(ofSize: 10, weight: .light)
         $0.textColor = .black
         $0.numberOfLines = 0
         $0.text = "This is just a sample description to fill out this label here and my full name is Adriano Leal De Freitas Ramos and I live in Brazil."
@@ -97,15 +97,15 @@ class PostTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             avatarImage.topAnchor.constraint(equalTo: mainView.topAnchor, constant: 5),
             avatarImage.leadingAnchor.constraint(equalTo: mainView.leadingAnchor, constant: 10),
-            avatarImage.heightAnchor.constraint(equalToConstant: 30),
+            avatarImage.heightAnchor.constraint(equalToConstant: 50),
             avatarImage.widthAnchor.constraint(equalTo: avatarImage.heightAnchor)
         ])
     }
     
     private func setupUsernameLabel() {
         NSLayoutConstraint.activate([
-            usernameLabel.topAnchor.constraint(equalTo: mainView.topAnchor, constant: 5),
-            usernameLabel.leadingAnchor.constraint(equalTo: avatarImage.trailingAnchor, constant: 5),
+            usernameLabel.topAnchor.constraint(equalTo: mainView.topAnchor, constant: 20),
+            usernameLabel.leadingAnchor.constraint(equalTo: avatarImage.trailingAnchor, constant: 10),
         ])
     }
     
