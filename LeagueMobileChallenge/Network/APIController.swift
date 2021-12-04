@@ -6,76 +6,63 @@
 //  Copyright © 2019 Kelvin Lau. All rights reserved.
 //
 
-import Foundation
 import Alamofire
+import UIKit
 
 class APIController {
-    static let user = "user"
-    static let password = "password"
     
-    static let domain = "https://engineering.league.dev/challenge/api/"
-    let loginAPI = domain + "login"
-    let postAPI = domain + "posts"
-    let userAPI = domain + "users"
-    
-    static let shared = APIController()
-    
-    fileprivate var userToken: String?
-    
-    func fetchUserToken(userName: String = "", password: String = "", completion: @escaping (String?, Error?) -> Void) {
-        guard let url = URL(string: loginAPI) else {
-            return
-        }
-        var headers: HTTPHeaders = [:]
-        
-        if let authorizationHeader = Request.authorizationHeader(user: userName, password: password) {
-            headers[authorizationHeader.key] = authorizationHeader.value
-        }
-        
-        Alamofire.request(url, headers: headers).responseJSON { (response) in
-            guard response.error == nil else {
-                completion(nil, response.error)
-                return
+    @discardableResult
+    private static func request(route: Endpoints, completion: @escaping (DataResponse<Any>?) -> Void) -> DataRequest {
+        return Alamofire
+            .request(route)
+            .validate()
+            .responseJSON { (response: DataResponse<Any>?) in
+                completion(response)
             }
-            
-            if let value = response.result.value as? [AnyHashable : Any] {
-                self.userToken = value["api_key"] as? String
+    }
+    
+    func fetchPosts(completion: @escaping ([Post]?, Error?) -> Void) {
+        APIController.request(route: .posts) { response in
+            if response?.error == nil {
+                if let data = response?.data, let utf88Text = String(data: data, encoding: .utf8) {
+                    let json = utf88Text.data(using: .utf8)
+                    do {
+                        let decoder = JSONDecoder()
+                        let decodedJosn = try decoder.decode([Post].self, from: json!)
+                        completion(decodedJosn, nil)
+                    } catch {
+                        debugPrint(error)
+                        completion(nil, error)
+                    }
+                }
+            } else {
+                // manage error
             }
-            completion(self.userToken, nil)
         }
+        
     }
-
-    func fetchPosts(completion: @escaping (Any?, Error?) -> Void) {
-        guard let url = URL(string: postAPI) else {
-            return
-        }
-
-        request(url: url) { data, error in
-            completion(data, error)
-        }
-
-    }
-
-    func fetchUsers(completion: @escaping (Any?, Error?) -> Void) {
-        guard let url = URL(string: userAPI) else {
-            return
-        }
-
-        request(url: url) { data, error in
-            completion(data, error)
+    
+    static func fetchUsers(completion: @escaping ([User]?, Error?) -> Void) {
+        request(route: .users) { response in
+            if response?.error == nil {
+                if let data = response?.data, let utf8Text = String(data: data, encoding: .utf8) {
+                    let json = utf8Text.data(using: .utf8)
+                    do {
+                        let decoder = JSONDecoder()
+                        let decodedJson = try decoder.decode([User].self, from: json!)
+                        completion(decodedJson, nil)
+                    } catch {
+                        completion(nil, error)
+                    }
+                }
+            } else {
+                // manage error
+            }
         }
     }
     
-    func request(url: URL, completion: @escaping (Data?, Error?) -> Void) {
-        guard let userToken = userToken else {
-            NSLog("No user token set")
-            completion(nil, nil)
-            return
-        }
-        let authHeader: HTTPHeaders = ["x-access-token" : userToken]
+    static func fetchPostsFromUser(userId: Int, completion: ([Post]?, Error?) -> Void) {
         
-        Alamofire.request(url, method: .get, parameters: nil, encoding: URLEncoding.default, headers: authHeader).responseJSON { (response) in
-            completion(response.data, response.error)
-        }
     }
+    
 }

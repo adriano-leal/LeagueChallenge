@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         
         let window = UIWindow(frame: UIScreen.main.bounds)
-        window.rootViewController = FeedViewController(viewModel: FeedViewModel())
+        window.rootViewController = FeedViewController(viewModel: FeedViewModel(service: APIController()))
         window.makeKeyAndVisible()
         self.window = window
         

@@ -19,7 +19,6 @@ class FeedViewController: UIViewController {
     init(viewModel: ViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        
     }
     
     required init?(coder: NSCoder) {
@@ -30,6 +29,7 @@ class FeedViewController: UIViewController {
         super.viewDidLoad()
         customView.tableView.delegate = self
         customView.tableView.dataSource = self
+        viewModel.getPosts()
     }
     
     override func loadView() {

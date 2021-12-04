@@ -8,10 +8,6 @@
 
 import Foundation
 
-struct UserResponse: Codable {
-    
-}
-
 struct User: Codable {
     var id: Int
 //    var avatar: String

@@ -8,10 +8,6 @@
 
 import Foundation
 
-struct PostResponse: Codable {
-    var posts: [Post]?
-}
-
 struct Post: Codable {
     var userId: Int
     var id: Int
